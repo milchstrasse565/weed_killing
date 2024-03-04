@@ -1,0 +1,10 @@
+(cl:defpackage weed_killing-srv
+  (:use )
+  (:export
+   "QUERYSERVOANGLE"
+   "<QUERYSERVOANGLE-REQUEST>"
+   "QUERYSERVOANGLE-REQUEST"
+   "<QUERYSERVOANGLE-RESPONSE>"
+   "QUERYSERVOANGLE-RESPONSE"
+  ))
+
