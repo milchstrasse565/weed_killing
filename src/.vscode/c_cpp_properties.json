@@ -1,0 +1,48 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/lmk/weed_killing/devel/include/**",
+        "/home/lmk/car_nav/devel/include/**",
+        "/home/lmk/rm_ws/devel/include/**",
+        "/home/lmk/D435i_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/lmk/car_nav/src/planner/global_planner/better_astar_global_planner/include/**",
+        "/home/lmk/D435i_ws/src/ddynamic_reconfigure/include/**",
+        "/home/lmk/car_nav/src/planner/global_planner/dstar_global_planner/include/**",
+        "/home/lmk/car_nav/src/planner/local_planner/dwa_local_planner/include/**",
+        "/home/lmk/car_nav/src/planner/global_planner/dynamicvoronoi/include/**",
+        "/home/lmk/catkin_ws/src/fashionstar_uart_servo_ros1/include/**",
+        "/home/lmk/car_nav/src/planner/global_planner/hybrid_astar_planner/include/**",
+        "/home/lmk/rm_ws/src/lakibeam_ros1/include/**",
+        "/home/lmk/rm_ws/src/navigation/include/**",
+        "/home/lmk/weed_killing/src/weed_killing/include/**",
+        "/home/lmk/D435i_ws/src/realsense-ros/realsense2_camera/include/**",
+        "/home/lmk/car_nav/src/planner/global_planner/relaxed_astar_global_planner/include/**",
+        "/home/lmk/rm_ws/src/rm_chassis_controllers/include/**",
+        "/home/lmk/rm_ws/src/rm_common/include/**",
+        "/home/lmk/rm_ws/src/rm_dbus/include/**",
+        "/home/lmk/rm_ws/src/rm_gazebo/include/**",
+        "/home/lmk/rm_ws/src/rm_hw/include/**",
+        "/home/lmk/rm_ws/src/rm_referee/include/**",
+        "/home/lmk/rm_ws/src/robot_state_controller/include/**",
+        "/home/lmk/car_nav/src/planner/global_planner/rrt_star_global_planner/include/**",
+        "/home/lmk/car_nav/src/planner/global_planner/voronoi_planner/include/**",
+        "/home/lmk/car_nav/src/planner/global_planner/waypoint-global-planner/include/**",
+        "/usr/include/**",
+        "/home/lmk/weed_killing/devel/include/weed_killing"
+    
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

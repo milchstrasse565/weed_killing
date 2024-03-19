@@ -1,0 +1,8 @@
+prefix=/home/lmk/weed_killing/devel
+
+Name: weed_killing
+Description: Description of weed_killing
+Version: 0.0.0
+Cflags: -I/home/lmk/weed_killing/devel/include
+Libs: -L${prefix}/lib -lweed_killing
+Requires: roscpp rospy std_msgs message_runtime

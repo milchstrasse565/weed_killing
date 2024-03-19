@@ -1,0 +1,8 @@
+prefix=/home/lmk/weed_killing/devel
+
+Name: image_geometry
+Description: Description of image_geometry
+Version: 1.16.2
+Cflags: -I/home/lmk/weed_killing/src/vision_opencv-noetic/image_geometry/include -I/usr/local/include/opencv4
+Libs: -L${prefix}/lib -limage_geometry /usr/local/lib/libopencv_img_hash.so.4.5.5 /usr/local/lib/libopencv_world.so.4.5.5
+Requires: sensor_msgs
