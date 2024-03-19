@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "weed_killing");  
   WeedKilling weed_killing;
-  ros::Rate loop_rate(0.2);
+  ros::Rate loop_rate(5);
   ros::AsyncSpinner spinner(1);  //多线程处理回调函数
   spinner.start();
   while (ros::ok())
@@ -58,6 +58,7 @@ int main(int argc, char** argv)
 WeedKilling::WeedKilling()
 {
 //   depth_sub = nh_.subscribe<sensor_msgs::Image>("/camera/aligned_depth_to_color/image_raw",1,&WeedKilling::depthCallback,this); //需要用的时候再进行初始化
+  weedDetection();
   image_sub   = nh_.subscribe<sensor_msgs::Image>("/camera/color/image_raw", 1, &WeedKilling::imageCallback,this);   // 订阅 RGB 图像话题
   pub_angle_0 = nh_.advertise<weed_killing::SetServoAngle>("set_servo_angle_0", 2);
   pub_angle_1 = nh_.advertise<weed_killing::SetServoAngle>("set_servo_angle_1", 2);
@@ -73,7 +74,6 @@ WeedKilling::WeedKilling()
     cv::Point3f(0, HALF_LENGTH, 0)              //正下方
 };
   query_angle_client.waitForExistence();// 等待角度查询服务开启
-
 }
 
 /*
@@ -81,8 +81,9 @@ WeedKilling::WeedKilling()
  */
 void WeedKilling::weedDetection() {
     // 随机生成矩形框左上角的坐标
-    int x = rand() % (image_width - rect_width);
-    int y = rand() % (image_height - rect_height);   // 计算矩形框的右下角坐标
+    int x = image_width / 2- rect_width / 2;
+    // int y = rand() % (image_height - rect_height);   // 计算矩形框的右下角坐标
+    int y = image_height / 2 - rect_height/ 2;   // 计算矩形框的右下角坐标
     int x2 = x + rect_width;
     int y2 = y + rect_height;
     coordinates_2d[0] = cv::Point(x, y);             // 左上角
@@ -108,7 +109,7 @@ void WeedKilling::drawRedRectangle()
 }
 
 /*
-这个没用，是shit
+这个没用，是shit,演示一下怎么获取深度数据
  */
 void WeedKilling::calculate3DPoints()
 {
@@ -179,13 +180,13 @@ void WeedKilling::solvePitchandYaw()
     yaw = yaw * 180 / CV_PI;
     pitch = pitch * 180 / CV_PI;
     QueryAngle();
-    // std::cout << "Yaw (left/right rotation): " << yaw << " degrees" << std::endl;
-    // std::cout << "Pitch (up/down rotation): " << pitch << " degrees" << std::endl;
+    std::cout << "Yaw (left/right rotation): " << yaw << " degrees" << std::endl;
+    std::cout << "Pitch (up/down rotation): " << pitch << " degrees" << std::endl;
     weed_killing::SetServoAngle msg_0;
     weed_killing::SetServoAngle msg_1;
     msg_0.id = SERVO_ID_0;
     msg_1.id = SERVO_ID_1;
-    msg_0.angle = angle_0+yaw;
+    msg_0.angle = angle_0;
     msg_1.angle = angle_1+pitch;
         // 发布消息
     pub_angle_0.publish(msg_0);
@@ -212,12 +213,67 @@ void WeedKilling::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
 {
     // 将 ROS 消息转换为 OpenCV 格式
     cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
-        // 显示图像
-    rgb_image = cv_ptr->image;
-
     // 显示图像
+    rgb_image = cv_ptr->image;
+    rgb_image_buffer.writeFromNonRT(rgb_image.clone());
+    topic_update_ = true;
+    cv::Scalar redColor(0, 0, 255); // Red color in BGR format
+    cv::rectangle(rgb_image, coordinates_2d[0], coordinates_2d[2], redColor,2);
+    // 显示图
     cv::imshow("RGB Image", rgb_image);
     cv::waitKey(60); // 等待按键事件
+}
+
+// void WeedKilling::imageCallback(const sensor_msgs::Image::ConstPtr& msg)
+// {
+//     // 将 ROS 消息转换为 OpenCV 格式
+//     cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+
+//     // 将图像转换为灰度图
+//     cv::Mat gray_image;
+//     cv::cvtColor(cv_ptr->image, gray_image, cv::COLOR_BGR2GRAY);
+
+//     // 查找灰度值最大的点
+//     double max_val;
+//     cv::Point max_loc;
+//     cv::minMaxLoc(gray_image, nullptr, &max_val, nullptr, &max_loc);
+
+//     // 输出灰度值最大点的坐标
+//     std::cout << "Coordinates of max gray value: (" << max_loc.x << ", " << max_loc.y << ")" << std::endl;
+
+//     // 显示图像
+//     cv::imshow("Gray Image", cv_ptr->image);
+//     cv::waitKey(60); // 等待按键事件
+// }
+
+
+void WeedKilling::pidControl(){
+   if (topic_update_)
+  {
+    cv::Mat* rgb_image = rgb_image_buffer.readFromRT();
+    cv::Mat gray_image;
+    cv::cvtColor(*rgb_image, gray_image, cv::COLOR_BGR2GRAY);
+    // 查找灰度值最大的点
+    double max_val;
+    cv::Point max_loc;
+    cv::minMaxLoc(gray_image, nullptr, &max_val, nullptr, &max_loc);
+    cv::Point center_loc(320,240);
+    float pitch =  follow_pid.PID_Control_Pitch(240,max_loc.y);
+    float yaw   =  follow_pid.PID_Control_Yaw(320,max_loc.x);
+    std::cout << "Pitch: " << pitch << std::endl;
+    std::cout << "Yaw: " << yaw << std::endl;
+    QueryAngle();
+    weed_killing::SetServoAngle msg_0;
+    weed_killing::SetServoAngle msg_1;
+    msg_0.id = SERVO_ID_0;
+    msg_1.id = SERVO_ID_1;
+    msg_0.angle = angle_0+yaw;
+    msg_1.angle = angle_1+pitch;
+    pub_angle_0.publish(msg_0);
+    pub_angle_1.publish(msg_1);
+  }
+
+    
 }
 
 void WeedKilling::QueryAngle()
@@ -246,9 +302,8 @@ void WeedKilling::QueryAngle()
 }
 
 void WeedKilling::run(){
-    
-  weedDetection();
-  drawRedRectangle();
-//   calculate3DPoints();
-  solvePitchandYaw();
+    // weedDetection();
+    // drawRedRectangle();
+    // solvePitchandYaw();
+    pidControl();
 }

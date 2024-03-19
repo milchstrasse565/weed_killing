@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "/home/lmk/weed_killing/devel/lib/weed_killing/weed_killing"
   "/home/lmk/weed_killing/devel/lib/weed_killing/weed_killing.pdb"
+  "CMakeFiles/weed_killing.dir/src/pid.cpp.o"
   "CMakeFiles/weed_killing.dir/src/weed_killing.cpp.o"
 )
 

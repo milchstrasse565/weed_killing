@@ -80,6 +80,10 @@ opencv2/imgproc/types_c.h
 stdexcept
 -
 
+/home/lmk/weed_killing/src/weed_killing/include/weed_killing/pid.h
+iostream
+-
+
 /home/lmk/weed_killing/src/weed_killing/include/weed_killing/weed_killing.h
 opencv2/opencv.hpp
 -
@@ -108,6 +112,12 @@ iostream
 weed_killing/QueryServoAngle.h
 -
 weed_killing/SetServoAngle.h
+-
+weed_killing/pid.h
+-
+
+/home/lmk/weed_killing/src/weed_killing/src/pid.cpp
+weed_killing/pid.h
 -
 
 /home/lmk/weed_killing/src/weed_killing/src/weed_killing.cpp

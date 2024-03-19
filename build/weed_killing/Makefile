@@ -542,6 +542,33 @@ roscpp_generate_messages_eus/fast:
 	cd /home/lmk/weed_killing/build && $(MAKE) -f weed_killing/CMakeFiles/roscpp_generate_messages_eus.dir/build.make weed_killing/CMakeFiles/roscpp_generate_messages_eus.dir/build
 .PHONY : roscpp_generate_messages_eus/fast
 
+src/pid.o: src/pid.cpp.o
+
+.PHONY : src/pid.o
+
+# target to build an object file
+src/pid.cpp.o:
+	cd /home/lmk/weed_killing/build && $(MAKE) -f weed_killing/CMakeFiles/weed_killing.dir/build.make weed_killing/CMakeFiles/weed_killing.dir/src/pid.cpp.o
+.PHONY : src/pid.cpp.o
+
+src/pid.i: src/pid.cpp.i
+
+.PHONY : src/pid.i
+
+# target to preprocess a source file
+src/pid.cpp.i:
+	cd /home/lmk/weed_killing/build && $(MAKE) -f weed_killing/CMakeFiles/weed_killing.dir/build.make weed_killing/CMakeFiles/weed_killing.dir/src/pid.cpp.i
+.PHONY : src/pid.cpp.i
+
+src/pid.s: src/pid.cpp.s
+
+.PHONY : src/pid.s
+
+# target to generate assembly for a file
+src/pid.cpp.s:
+	cd /home/lmk/weed_killing/build && $(MAKE) -f weed_killing/CMakeFiles/weed_killing.dir/build.make weed_killing/CMakeFiles/weed_killing.dir/src/pid.cpp.s
+.PHONY : src/pid.cpp.s
+
 src/weed_killing.o: src/weed_killing.cpp.o
 
 .PHONY : src/weed_killing.o
@@ -607,6 +634,9 @@ help:
 	@echo "... roscpp_generate_messages_eus"
 	@echo "... rebuild_cache"
 	@echo "... list_install_components"
+	@echo "... src/pid.o"
+	@echo "... src/pid.i"
+	@echo "... src/pid.s"
 	@echo "... src/weed_killing.o"
 	@echo "... src/weed_killing.i"
 	@echo "... src/weed_killing.s"

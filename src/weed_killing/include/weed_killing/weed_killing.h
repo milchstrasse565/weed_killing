@@ -46,6 +46,8 @@
 #include <weed_killing/QueryServoAngle.h>
 // 自定义消息
 #include <weed_killing/SetServoAngle.h>
+#include <weed_killing/pid.h>
+
 class WeedKilling
 {
 public:
@@ -57,11 +59,13 @@ public:
   void solvePitchandYaw();
   void QueryAngle();
   void run();
-
+  void pidControl();
 private:
   ros::NodeHandle nh_;
   cv::Mat rgb_image;
   realtime_tools::RealtimeBuffer<cv::Mat> depth_image_buffer;
+  realtime_tools::RealtimeBuffer<cv::Mat> rgb_image_buffer;
+
   std::vector<cv::Point> coordinates_2d{6, cv::Point(0, 0)};//6个2d像素坐标
   std::vector<cv::Point3f> coordinates_3d;//6个3d坐标
   static const int image_width = 640;
@@ -82,4 +86,5 @@ private:
   weed_killing::QueryServoAngle query_angle_srv1;
   float angle_0 = 0.0;
   float angle_1 = 0.0;
+  pid_cplus follow_pid{};
 };

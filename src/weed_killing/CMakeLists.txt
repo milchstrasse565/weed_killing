@@ -228,15 +228,19 @@ catkin_package(
 
 include_directories(include ${OpenCV_INCLUDE_DIRS})
 include_directories(include ${catkin_INCLUDE_DIRS})
-add_executable(weed_killing src/weed_killing.cpp)
+add_executable(
+weed_killing 
+src/weed_killing.cpp
+src/pid.cpp
+)
 target_link_libraries(weed_killing ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 # add_dependencies(opencv_test_node ${PROJECT_NAME}_generate_messages_cpp)
 
-message(STATUS "Open library status: ")
-message(STATUS "> version: ${OpenCV_VERSION} ")
-message(STATUS "libraries: ${OpenCV_LIBS} ")
-message(STATUS "> include: ${OpenCV_INCLUDE_DIRS}  ")
-message(STATUS "> config path: ${OpenCV_INSTALL_PATH}  ")
+# message(STATUS "Open library status: ")
+# message(STATUS "> version: ${OpenCV_VERSION} ")
+# message(STATUS "libraries: ${OpenCV_LIBS} ")
+# message(STATUS "> include: ${OpenCV_INCLUDE_DIRS}  ")
+# message(STATUS "> config path: ${OpenCV_INSTALL_PATH}  ")
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
